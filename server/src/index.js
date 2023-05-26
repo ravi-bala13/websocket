@@ -22,14 +22,11 @@ const connections = new Map();
 
 // connecting websocket server
 io.on("connection", (socket) => {
-  // console.log("req:", req.query);
   console.log("socketId:", socket.id);
 
   // Store the WebSocket connection with a unique identifier or username
   const { userId } = socket.handshake.query; // Replace with your own logic to generate a unique identifier
-  console.log("userId:", userId);
   connections.set(userId, socket);
-  console.log("connections:", connections.keys());
 
   // socket.on("join_room", (data) => {
   //   socket.join(data);
@@ -41,16 +38,14 @@ io.on("connection", (socket) => {
     // socket.to(data.room).emit("receive_message", data);
 
     const { recipient } = data;
-    console.log("recipient:", recipient);
+    // console.log("recipient:", recipient);
 
     // Find the WebSocket connection for the recipient
     const recipientWs = connections.get(recipient);
-    console.log("recipientWs:", recipientWs.send);
 
     if (recipientWs) {
       // Send the message to the recipient
       recipientWs.emit("receive_message", data);
-      // socket.emit("receive_message", data);
     }
   });
 
